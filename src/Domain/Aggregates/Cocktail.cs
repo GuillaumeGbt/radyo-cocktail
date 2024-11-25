@@ -7,12 +7,14 @@ public class Cocktail : Entity<Guid>
     private List<Composition> _compositions;
     private List<Step> _steps;
     public string Name { get; private set; }
+    public string? Description { get; private set; }
     
-    public Cocktail(string name)
+    public Cocktail(string name, string? description = null)
     {
         _steps = new List<Step>();
         _compositions = new List<Composition>();
         Name = name;
+        Description = description;
         CreatedOn = DateTimeOffset.UtcNow;
     }
     
@@ -56,6 +58,13 @@ public class Cocktail : Entity<Guid>
     public void UpdateName(string name)
     {
         Name = name;
+    }
+
+    public void UpdateDescription(string? description)
+    {
+        if (description != null && description.Length > 100)
+            throw new ArgumentException("Description is limited to 100 characters.");
+        Description = description;
     }
 
     public void Remove()
