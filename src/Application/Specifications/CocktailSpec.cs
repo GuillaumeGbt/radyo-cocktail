@@ -20,4 +20,9 @@ public sealed class CocktailSpec : Specification<Domain.Aggregates.Cocktail, Coc
         Query.Include(c => c.Compositions).ThenInclude(c => c.Ingredient);
         return this;
     }
+    public CocktailSpec ByIngredients(string IngredientName)
+    {
+        Query.Where(c => c.Compositions.Any(comp => comp.Ingredient.Name.Contains(IngredientName)));
+        return this;
+    }
 }

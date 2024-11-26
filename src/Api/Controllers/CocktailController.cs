@@ -11,11 +11,11 @@ namespace Cocktail.Api.Controllers;
 public class CocktailController(ISender mediator) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] string? ingredientName)
     {
-        return Ok(await mediator.Send(new CocktailQuery()));
+        return Ok(await mediator.Send(new CocktailQuery(ingredientName)));
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Create(CocktailCreateCommand request)
     {
