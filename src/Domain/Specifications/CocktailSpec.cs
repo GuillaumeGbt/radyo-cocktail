@@ -10,7 +10,13 @@ public sealed class CocktailSpec : Specification<Aggregates.Cocktail>
         Query.Where(i => i.Id == id);
         return this;
     }
-    
+
+    public CocktailSpec HasName(string name)
+    {
+        Query.Where(c => c.Name == name);
+        return this;
+    }
+
     public CocktailSpec HasIngredient(Ingredient ingredient)
     {
         Query.Where(i => i.Compositions.Any(c => c.IngredientId == ingredient.Id));

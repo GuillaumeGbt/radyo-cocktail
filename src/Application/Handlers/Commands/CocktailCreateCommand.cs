@@ -1,5 +1,6 @@
 ﻿using Cocktail.Application.Models.Dtos;
 using Cocktail.Application.Repositories;
+using Cocktail.Domain.Specifications;
 using FluentValidation;
 using Mapster;
 using MediatR;
@@ -10,11 +11,17 @@ public record CocktailCreateCommand(string Name) : IRequest<CocktailDto>;
 
 public class CocktailCreateValidator : AbstractValidator<CocktailCreateCommand>
 {
-    public CocktailCreateValidator()
+    public CocktailCreateValidator(IAsyncRepository<Domain.Aggregates.Cocktail> cocktailRepository)
     {
         RuleFor(x => x.Name)
             .NotNull()
-            .NotEmpty();
+            .NotEmpty()
+            .MustAsync(async (name, cancellationToken) =>
+            {
+                var exist = await cocktailRepository.GetAsync(new CocktailSpec().HasName(name), cancellationToken);
+                return (exist is null);
+            })
+            .WithMessage("Cocktail name must be unique");
     }
 }
 
