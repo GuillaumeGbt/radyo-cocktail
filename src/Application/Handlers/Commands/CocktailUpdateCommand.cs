@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Cocktail.Application.Handlers.Commands;
 
-public record CocktailUpdateCommand(Guid Id, string Name) : IRequest<CocktailDto>;
+public record CocktailUpdateCommand(Guid Id, string Name, string? description) : IRequest<CocktailDto>;
 
 public class CocktailUpdateCommandHandler(IAsyncRepository<Domain.Aggregates.Cocktail> cocktailRepository) : IRequestHandler<CocktailUpdateCommand, CocktailDto>
 {
@@ -16,8 +16,13 @@ public class CocktailUpdateCommandHandler(IAsyncRepository<Domain.Aggregates.Coc
         var cocktail = await cocktailRepository.GetAsync(new CocktailSpec().ById(request.Id), cancellationToken);
         if (cocktail is null)
             throw new EntityNotFoundException<Domain.Aggregates.Cocktail>(nameof(request.Id), request.Id);
-        
         cocktail.UpdateName(request.Name);
+
+        if (request.description is not null)
+        {
+            cocktail.UpdateDescription(request.description);
+        }
+
         await cocktailRepository.UpdateAsync(cocktail, cancellationToken);
         return cocktail.Adapt<CocktailDto>();
     }
