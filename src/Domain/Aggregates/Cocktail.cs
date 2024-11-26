@@ -62,7 +62,7 @@ public class Cocktail : Entity<Guid>
 
     public void UpdateDescription(string? description)
     {
-        if (description != null && description.Length > 100)
+        if (description is not null && description.Length > 100)
             throw new ArgumentException("Description is limited to 100 characters.");
         Description = description;
     }
