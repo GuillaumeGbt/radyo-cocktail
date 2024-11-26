@@ -7,8 +7,6 @@
         <AssemblyName>Cocktail.Api</AssemblyName>
         <RootNamespace>Cocktail.Api</RootNamespace>
         <UserSecretsId>8583f4e8-c36f-4923-9f8d-1250e6717adb</UserSecretsId>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 
     <ItemGroup>
